@@ -7,22 +7,29 @@ class MaxHeap:
         self._heapify_up(len(self.heap) - 1)
         return f"{item} added"
 
-    def pop(self):
-        if len(self.heap) == 0:
-            return None
-        if len(self.heap) == 1:
-            return self.heap.pop()
-        root = self.heap[0]
-        self.heap[0] = self.heap.pop()
-        self._heapify_down(0)
-        return root
-
     def _heapify_up(self, index):
         parent_index = (index - 1) // 2
         while index > 0 and self.heap[index] > self.heap[parent_index]:
             self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
             index = parent_index
             parent_index = (index - 1) // 2
+
+    def add_all(self, list):
+        for element in list:
+            self.insert(element)
+
+    def show(self):
+        print("Max Heap:", self.heap)
+
+    def pop(self):
+        if len(self.heap) == 0:
+            return "Heap is empty"
+        if len(self.heap) == 1:
+            return f"{self.heap.pop()} removed"
+        root = self.heap[0]
+        self.heap[0] = self.heap.pop()
+        self._heapify_down(0)
+        return f"{root} removed"
 
     def _heapify_down(self, index):
         largest = index
@@ -36,24 +43,6 @@ class MaxHeap:
             self.heap[index], self.heap[largest] = self.heap[largest], self.heap[index]
             self._heapify_down(largest)
 
-    def peek(self):
-        if len(self.heap) > 0:
-            return self.heap[0]
-        return None
-
-    def size(self):
-        return len(self.heap)
-
-    def is_empty(self):
-        return len(self.heap) == 0
-    
-    def add_all(self, list):
-        for element in list:
-            self.insert(element)
-
-    def show(self):
-        print("Max Heap:", self.heap)
-
 if __name__ == "__main__":
     heap = MaxHeap()  
     elements = [50, 30, 40, 10, 20, 35]
@@ -61,4 +50,8 @@ if __name__ == "__main__":
     heap.show()
     print(heap.insert(45))
     heap.show()
-    
+    removed = ""
+    while removed != "Heap is empty":
+        removed = heap.pop()
+        print(removed, end=" - ")
+        heap.show()
