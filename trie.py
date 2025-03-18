@@ -25,11 +25,29 @@ class Trie:
         _dfs(self.root, "", words)
         return words
     
+    def all_levels(self):
+        levels = {}
+        def _dfs(node, level=0):
+            if node.children:
+                level+=1
+                if level in levels.keys():
+                    levels[level] += [key for key in node.children.keys()]
+                else:
+                    levels[level] = [key for key in node.children.keys()]
+            for char, child in node.children.items():
+                if not child:
+                    level-=1             
+                _dfs(child, level)            
+        _dfs(self.root)
+        return levels
 
 if __name__ == "__main__":
     trie = Trie()
-    words = ["car", "castle", "cap", "cat", "hello", "world", "orange", "house", "room", "row", "home", "kitchen", "frog", "front", "role"]
+    words = ["casa", "carro", "caminhão", "cachorro", "cadeira"]
     for word in words:
         trie.insert(word)
     print(trie.all_words())
+    for level, chars in trie.all_levels().items():
+        print("Level", level, "Chars", chars)
+    
     
