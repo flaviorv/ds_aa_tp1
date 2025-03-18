@@ -49,12 +49,30 @@ class Trie:
         for level in levels:            
             print("Level", level, [f"Parent: {parent}: {chars}"   for parent, chars in levels[level].items()])
 
+    def _search(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end
+    
+    def search(self, word):
+        found = self._search(word)
+        print(f"Is Word {word} in the trie?", found)
+    
 if __name__ == "__main__":
     trie = Trie()
-    words = ["casa", "carro", "caminhão", "cachorro", "cadeira"]
+    words = ["casa", "casado", "carro", "caminhão", "cachorro", "cadeira"]
     for word in words:
         trie.insert(word)
     print(trie.all_words())
-    trie.all_levels()
-    
+    # trie.all_levels()
+    trie.search("casa")
+    trie.search("cas")
+    trie.search("casad")
+    trie.search("casado")
+    trie.search("casadoo")
+    trie.search("cadeira")
+    trie.search("Cadeira")
     
